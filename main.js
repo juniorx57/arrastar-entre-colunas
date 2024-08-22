@@ -24,7 +24,6 @@ function criarCard(id, nome, equipamento, servico) {
     card.className = 'card';
     card.draggable = true;
     card.id = id;
-    card.setAttribute('ondragstart', 'drag(event)');
 
     card.innerHTML = `
         <p><strong>Senha:</strong> ${id}</p>
@@ -37,28 +36,6 @@ function criarCard(id, nome, equipamento, servico) {
 
     // Adiciona o card na coluna Triagem para inicio do serviço
     document.getElementById('triagem').appendChild(card);
-}
-
-// Função para permitir o arrastar e soltar de elementos
-function allowDrop(event) {
-    event.preventDefault();
-}
-
-function drag(event) {
-    event.dataTransfer.setData('text', event.target.id);
-}
-
-function drop(event) {
-    event.preventDefault();
-    const data = event.dataTransfer.getData('text');
-    const draggedElement = document.getElementById(data);
-    
-    if (event.target.classList.contains('column')) {
-        event.target.appendChild(draggedElement);
-    } else if (event.target.classList.contains('card')) {
-        const column = event.target.closest('.column');
-        column.insertBefore(draggedElement, event.target.nextSibling);
-    }
 }
 
 // Função para editar um card
