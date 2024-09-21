@@ -2,6 +2,7 @@
 function gerarId() {
     return Math.random().toString(36).substr(2, 9).toUpperCase();
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     // Função para adicionar um novo card ao painel
     document.getElementById('cardForm').addEventListener('submit', function(event) {
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
         this.reset();
     });
 });
+
 // Função para criar um card dos dados
 function criarCard(id, nome, equipamento, servico) {
     const card = document.createElement('div');
@@ -60,7 +62,6 @@ function drop(event) {
 // Função para editar um card
 function editarCard(id) {
     const card = document.getElementById(id);
-    //p:nth-of-type seleciona um elemento 'p' no grupo dos elementos, sendo o primeiro 'id' e o ultimo 'serviço'
     const nome = prompt('Nome Completo:', card.querySelector('p:nth-of-type(2)').textContent.split(': ')[1]);
     const equipamento = prompt('Equipamento:', card.querySelector('p:nth-of-type(3)').textContent.split(': ')[1]);
     const servico = prompt('Serviço:', card.querySelector('p:nth-of-type(4)').textContent.split(': ')[1]);
@@ -75,6 +76,7 @@ function editarCard(id) {
         `;
     }
 }
+
 // Função para deletar um card
 function deletarCard(id) {
     const card = document.getElementById(id);
