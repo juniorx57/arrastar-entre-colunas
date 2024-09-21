@@ -2,16 +2,18 @@
 function gerarId() {
     return Math.random().toString(36).substr(2, 9).toUpperCase();
 }
-// Função para adicionar um novo card ao painel
-document.getElementById('cardForm').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const nome = document.getElementById('nome').value;
-    const equipamento = document.getElementById('equipamento').value;
-    const servico = document.getElementById('servico').value;
-    const id = gerarId();
-    criarCard(id, nome, equipamento, servico);
-    // Limpar o formulário
-    this.reset();
+document.addEventListener('DOMContentLoaded', function() {
+    // Função para adicionar um novo card ao painel
+    document.getElementById('cardForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const nome = document.getElementById('nome').value;
+        const equipamento = document.getElementById('equipamento').value;
+        const servico = document.getElementById('servico').value;
+        const id = gerarId();
+        criarCard(id, nome, equipamento, servico);
+        // Limpar o formulário
+        this.reset();
+    });
 });
 // Função para criar um card dos dados
 function criarCard(id, nome, equipamento, servico) {
