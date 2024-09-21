@@ -1,0 +1,18 @@
+{
+    "short_name": "WebApp",
+    "name": "WebApp",
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#ffffff",
+    "theme-color": "#ffffff",
+    "background_color": "#000000",
+    "background-color": "#000000",
+    "description": "Pagina de arrastar e soltar itens",
+    "icons": [
+        {
+            "src": "assets/img/tools.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ]
+}
