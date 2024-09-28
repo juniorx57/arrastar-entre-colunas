@@ -1,43 +1,92 @@
-// Função para gerar um ID único para cada card
-function gerarId() {
-    return Math.random().toString(36).substr(2, 9).toUpperCase();
-}
-
 document.addEventListener('DOMContentLoaded', function() {
-    // Função para adicionar um novo card ao painel
+    document.getElementById('capturePhoto').addEventListener('click', function() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.play();
+
+                const captureButton = document.createElement('button');
+                captureButton.innerText = 'Capturar';
+                document.body.appendChild(video);
+                document.body.appendChild(captureButton);
+
+                captureButton.addEventListener('click', function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 150;  // Defina a largura desejada
+                    canvas.height = 150; // Defina a altura desejada
+                    const context = canvas.getContext('2d');
+                    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const photoData = canvas.toDataURL('image/png');
+                    document.getElementById('photo').value = photoData;
+                    document.getElementById('photoPreview').src = photoData;
+                    document.getElementById('photoPreview').style.display = 'block';
+                    
+                    document.getElementById('addCardButton').style.display = 'block';
+
+                    stream.getTracks().forEach(track => track.stop());
+                    video.remove();
+                    captureButton.remove();
+                });
+            })
+            .catch(error => {
+                console.error("Erro ao acessar a câmera:", error);
+            });
+    });
+
     document.getElementById('cardForm').addEventListener('submit', function(event) {
         event.preventDefault();
         const nome = document.getElementById('nome').value;
         const equipamento = document.getElementById('equipamento').value;
         const servico = document.getElementById('servico').value;
         const id = gerarId();
-        criarCard(id, nome, equipamento, servico);
-        // Limpar o formulário
+        const photoData = document.getElementById('photo').value;
+        criarCard(id, nome, equipamento, servico, photoData);
         this.reset();
+        document.getElementById('photoPreview').style.display = 'none';
+        document.getElementById('addCardButton').style.display = 'none';
     });
 });
 
-// Função para criar um card dos dados
-function criarCard(id, nome, equipamento, servico) {
+// Função para criar um card
+function criarCard(id, nome, equipamento, servico, photoData) {
     const card = document.createElement('div');
     card.className = 'card';
     card.draggable = true;
     card.id = id;
     card.setAttribute('ondragstart', 'drag(event)');
 
+    let timer = 0; 
+    const timerInterval = setInterval(() => {
+        timer++;
+        card.querySelector('.timer').textContent = `Tempo: ${timer}s`;
+        
+        if (timer >= 1000) {
+            clearInterval(timerInterval);
+            card.querySelector('.timer').textContent = 'Tempo esgotado!';
+        } else if (timer > 60) {
+            card.style.backgroundColor = 'yellow'; 
+        } 
+        if (timer > 120) { 
+            card.style.backgroundColor = 'red'; 
+        }
+    }, 1000);
+
     card.innerHTML = `
+        <p class="timer">Tempo: ${timer}s</p>
         <p><strong>Senha:</strong> ${id}</p>
         <p><strong>Nome:</strong> ${nome}</p>
         <p><strong>Equipamento:</strong> ${equipamento}</p>
         <p><strong>Serviço:</strong> ${servico}</p>
+        <img src="${photoData}" alt="Foto" style="width: 60px; height: auto;"/>
         <button onclick="editarCard('${id}')">Editar</button>
         <button onclick="deletarCard('${id}')">Excluir</button>
     `;
-    // Adiciona o card na coluna Triagem para inicio do serviço
+
     document.getElementById('triagem').appendChild(card);
 }
 
-// Função para permitir o arrastar e soltar de elementos
+// Funções de arrastar e soltar
 function allowDrop(event) {
     event.preventDefault();
 }
@@ -71,6 +120,7 @@ function editarCard(id) {
             <p><strong>Nome:</strong> ${nome}</p>
             <p><strong>Equipamento:</strong> ${equipamento}</p>
             <p><strong>Serviço:</strong> ${servico}</p>
+            <img src="${card.querySelector('img').src}" alt="Foto" style="width: 100px; height: auto;"/>
             <button onclick="editarCard('${id}')">Editar</button>
             <button onclick="deletarCard('${id}')">Excluir</button>
         `;
@@ -83,4 +133,9 @@ function deletarCard(id) {
     if (card) {
         card.remove();
     }
+}
+
+// Função para gerar um ID único para cada card
+function gerarId() {
+    return Math.random().toString(36).substr(2, 9).toUpperCase();
 }

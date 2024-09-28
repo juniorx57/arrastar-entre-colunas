@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Cards</title>
-<link rel="stylesheet" href="style.css">
-<link rel="manifest" href="manifest.webmanifest">
-<script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+    <script src="main.js" defer></script>
 </head>
 <body>
     <form id="cardForm">
         <input type="text" id="nome" placeholder="Nome Completo" required>
         <input type="text" id="equipamento" placeholder="Equipamento" required>
         <input type="text" id="servico" placeholder="Serviço" required>
-        <button type="submit">Adicionar Card</button>
+        <button type="button" id="capturePhoto">Capturar Foto</button>
+        <input type="hidden" id="photo" value="">
+        <img id="photoPreview" src="" alt="Preview da Foto" style="display: none; width: 100px; height: auto;">
+        <button type="submit" id="addCardButton" style="display: none;">Adicionar Card</button>
     </form>
 
     <div class="container">
